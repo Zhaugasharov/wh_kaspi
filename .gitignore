@@ -1,0 +1,5 @@
+venv
+venv/*
+./test.py
+.idea
+*.zip
