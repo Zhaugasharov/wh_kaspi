@@ -35,19 +35,20 @@ def main():
                 continue
 
             kaspi_new_orders = kaspi_new_orders.json()
+
             try:
                 for order in kaspi_new_orders["data"]:
 
                     if order["id"] in orders_new:
                         continue
 
-                    orders_new.append(int(order["id"]))
+                    orders_new.append(order["id"])
                     message = messages["bought"]
                     goods = kaspi.get_info_about_good(order["id"]).json()
                     good = kaspi.join_goods_text(goods["data"])
                     message = kaspi.format_message(message, order, good, goods["data"])
                     msisdn = order["attributes"]["customer"]["cellPhone"]
-                    print(message)
+
                     found = whatsapp.search_contact("7" + str(msisdn))
 
                     if found is False:

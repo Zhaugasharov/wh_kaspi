@@ -43,7 +43,6 @@ class Kaspi:
         }
 
     def format_message(self, message, order, good=None, goods=None):
-        message = message.replace("NAME", order["attributes"]["customer"]["firstName"])
 
         try:
             order_date = order["attributes"]["kaspiDelivery"]["courierTransmissionPlanningDate"]
@@ -65,6 +64,8 @@ class Kaspi:
             message = message.replace("LINK", link)
             message = message.replace("PRODUCT_NAME_RU", good["text_ru"])
             message = message.replace("PRODUCT_NAME_KK", good["text_kk"])
+
+        message = message.replace("NAME", order["attributes"]["customer"]["firstName"])
 
         return message
 
