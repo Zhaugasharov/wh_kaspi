@@ -35,26 +35,29 @@ def main():
                 continue
 
             kaspi_new_orders = kaspi_new_orders.json()
+            try:
+                for order in kaspi_new_orders["data"]:
 
-            for order in kaspi_new_orders["data"]:
+                    if order["id"] in orders_new:
+                        continue
 
-                if order["id"] in orders_new:
-                    continue
+                    orders_new.append(int(order["id"]))
+                    message = messages["bought"]
+                    goods = kaspi.get_info_about_good(order["id"]).json()
+                    good = kaspi.join_goods_text(goods["data"])
+                    message = kaspi.format_message(message, order, good, goods["data"])
+                    msisdn = order["attributes"]["customer"]["cellPhone"]
+                    print(message)
+                    found = whatsapp.search_contact("7" + str(msisdn))
 
-                orders_new.append(int(order["id"]))
-                message = messages["bought"]
-                goods = kaspi.get_info_about_good(order["id"]).json()
-                good = kaspi.join_goods_text(goods["data"])
-                message = kaspi.format_message(message, order, good, goods["data"])
-                msisdn = order["attributes"]["customer"]["cellPhone"]
-                print(message)
-                found = whatsapp.search_contact("7" + str(msisdn))
-
-                if found is False:
-                    whatsapp.back()
-                    logging.warning("Not found: " + str(msisdn))
-                else:
-                    whatsapp.send_message(message)
+                    if found is False:
+                        whatsapp.back()
+                        logging.warning("Not found: " + str(msisdn))
+                    else:
+                        whatsapp.send_message(message)
+            except Exception as e:
+                print("NEW ORDER PARSE ERROR")
+                print(e)
 
             if not kaspi_new_orders["data"]:
                 time.sleep(3)
@@ -67,25 +70,29 @@ def main():
                 continue
 
             kaspi_delivered_orders = kaspi_delivered_orders.json()
+            try:
+                for order in kaspi_delivered_orders["data"]:
+                    if order["id"] in orders_delivered:
+                        continue
 
-            for order in kaspi_delivered_orders["data"]:
-                if order["id"] in orders_delivered:
-                    continue
+                    goods = kaspi.get_info_about_good(order["id"]).json()
+                    orders_delivered.append(order["id"])
+                    message = messages["delivered"]
+                    good = kaspi.join_goods_text(goods["data"])
+                    message = kaspi.format_message(message, order, good, goods["data"])
+                    msisdn = order["attributes"]["customer"]["cellPhone"]
+                    print(message)
+                    found = whatsapp.search_contact("7" + str(msisdn))
 
-                goods = kaspi.get_info_about_good(order["id"]).json()
-                orders_delivered.append(order["id"])
-                message = messages["delivered"]
-                good = kaspi.join_goods_text(goods["data"])
-                message = kaspi.format_message(message, order, good, goods["data"])
-                msisdn = order["attributes"]["customer"]["cellPhone"]
-                print(message)
-                found = whatsapp.search_contact("7" + str(msisdn))
+                    if found is False:
+                        whatsapp.back()
+                        logging.warning("Not found: " + str(msisdn))
+                    else:
+                        whatsapp.send_message(message)
+            except Exception as e:
+                print("DELIVERED ERROR")
+                print(e)
 
-                if found is False:
-                    whatsapp.back()
-                    logging.warning("Not found: " + str(msisdn))
-                else:
-                    whatsapp.send_message(message)
             print("_________")
             if not kaspi_delivered_orders["data"]:
                 time.sleep(3)
