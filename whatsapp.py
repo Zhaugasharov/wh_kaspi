@@ -63,5 +63,10 @@ class WhatsApp:
         self.insert_text(insert, message)
         insert.send_keys(Keys.ENTER)
 
+    def write_as_not_found(self, msisdn):
+        file = open("not_found.txt", "a")
+        file.write("%r\n" %msisdn)
+        file.close()
+
     def get_version(self):
         return self.__version

@@ -6,7 +6,10 @@ from datetime import datetime
 
 class Kaspi:
     __url = "https://kaspi.kz/shop/api/v2/orders"
-    __token = "2V2vsCBKuU11F4ZIpItlGk2XBnRAVmbt5AKXs4xtpAE="
+    __token = ""
+
+    def set_token(self, token):
+        self.__token = token
 
     def get_orders(self, state, status, start_at, end_at):
         query = {
