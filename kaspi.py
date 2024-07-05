@@ -45,6 +45,11 @@ class Kaspi:
             "text_kk": text_kk
         }
 
+    def get_product_code(self, entry_id):
+        url = "https://kaspi.kz/shop/api/v2/orderentries/" + entry_id + "/product"
+        return requests.get(url, headers={"X-Auth-Token": self.__token, "User-Agent": "Xcs",
+                                          "Content-Type": "application/vnd.api+json"}, verify=False)
+
     def format_message(self, message, order, good=None, goods=None):
 
         try:
@@ -61,8 +66,10 @@ class Kaspi:
             link = ""
 
             for g in goods:
-                link = "https://kaspi.kz/shop/review/productreview?orderCode=" + str(order["attributes"][
-                    "code"]) + "&productCode=" + str(g["attributes"]["offer"]["code"]) + "&rating=5\n"
+                product = self.get_product_code(g["id"])
+                product = product.json()
+                link = "https://kaspi.kz/shop/review/productreview?orderCode=" + str(order["attributes"]["code"]) + \
+                       "&productCode=" + str(product['data']['attributes']['code']) + "&rating=5\n"
 
             message = message.replace("LINK", link)
             message = message.replace("PRODUCT_NAME_RU", good["text_ru"])
