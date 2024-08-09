@@ -57,7 +57,7 @@ class WhatsApp:
         return "+" + msisdn[0] + " " + msisdn[1:4] + " " + msisdn[4:7] + " " + msisdn[7:len(msisdn)]
 
     def send_message(self, message):
-        path = '(//div[@class="selectable-text copyable-text x15bjb6t x1n2onr6"])[position()=2]'
+        path = '//div[@aria-placeholder="Введите сообщение"]'
         insert = WebDriverWait(self.__driver, 20).until(EC.element_to_be_clickable((By.XPATH, path)))
         insert.click()
         self.insert_text(insert, message)
