@@ -25,7 +25,7 @@ class WhatsApp:
 
             button = WebDriverWait(self.__driver, 20).until(EC.element_to_be_clickable((By.XPATH, '//span[@data-icon="new-chat-outline"]')))
             button.click()
-            search_area = WebDriverWait(self.__driver, 20).until(EC.element_to_be_clickable((By.XPATH, '//div[@aria-label="Текстовое поле поиска"]')))
+            search_area = WebDriverWait(self.__driver, 20).until(EC.element_to_be_clickable((By.XPATH, '//div[text()="Поиск по имени или номеру"]')))
             self.insert_text(search_area, msisdn)
             fmsisdn = self.__reformat_msisdn(msisdn)
             time.sleep(3)
