@@ -22,10 +22,10 @@ class WhatsApp:
         found = False
 
         try:
-
+            #//div[@aria-label="Текстовое поле поиска"]
             button = WebDriverWait(self.__driver, 20).until(EC.element_to_be_clickable((By.XPATH, '//span[@data-icon="new-chat-outline"]')))
             button.click()
-            search_area = WebDriverWait(self.__driver, 20).until(EC.element_to_be_clickable((By.XPATH, '//div[text()="Поиск по имени или номеру"]')))
+            search_area = WebDriverWait(self.__driver, 20).until(EC.element_to_be_clickable((By.XPATH, '//div[@class="x1hx0egp x6ikm8r x1odjw0f x6prxxf x1k6rcq7 x1whj5v"]')))
             self.insert_text(search_area, msisdn)
             fmsisdn = self.__reformat_msisdn(msisdn)
             time.sleep(3)
