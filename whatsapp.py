@@ -40,7 +40,7 @@ class WhatsApp:
         return found
 
     def back(self):
-        path = '//div[@aria-label="Назад"]'
+        path = '//span[@data-icon="back-refreshed"]'
         btn = WebDriverWait(self.__driver, 20).until(EC.element_to_be_clickable((By.XPATH, path)))
         btn.click()
 
